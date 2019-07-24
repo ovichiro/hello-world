@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link data-require="bootstrap@3.0.0" data-semver="3.0.0" rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/0.12.16/vue.js"></script>
+
+</head>
+
+<body>
+ 
+  <div id="myEl" class="container">
+    <div class="row col-md-6">
+      
+      <div v-show="remaining.length">
+        <h2>Tasks ({{remaining.length}})</h2>
+
+        <ol class="list-group">
+          <li v-repeat="task:tasks | inProgress" class="list-group-item">
+
+
+            <div style="col-md-10" v-on="dblclick:editTask(task)"> {{task.body}}
+              <button class='tick' v-on="click:completeTask(task)">&#10004; </button>
+              <button class='cross' v-on="click:removeTask(task)">&#10007; </button>
+            </div>
+
+
+
+          </li>
+        </ol>
+      </div>
+      <form v-on="submit:addTask">
+        <div class="form-group">
+          <input v-model="newTask" v-el="newTaskEl" type="text" class="form-control" placeholder="I need to">
+
+        </div>
+        <button class="btn btn-primary">Add Task</button>
+        <button class="btn" v-on="click:completeAll">Mark All as Complete</button>
+      </form>
+      <br/>
+
+
+      <div v-if="completions.length">
+        <h2>Completed ({{completions.length}}) </h2>
+        <ol class="list-group">
+          <li v-repeat="task:tasks | filterBy true in 'completed'" class="list-group-item">
+
+
+            <div style="col-md-10"> 
+              {{task.body}}
+              
+              <button class='cross' v-on="click:toggleTaskCompletion(task)">&#10007; </button>
+            
+            </div>
+
+
+
+          </li>
+        </ol>
+        
+        <button class="btn btn-danger" v-on="click:clearCompleted">Clear Completed</button>
+      </div>
+
+    </div>
+    <!--
+    <div class="row col-md-6">
+      <pre> {{$data|json}} </pre>
+    </div>
+    -->
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
